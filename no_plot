@@ -1,0 +1,58 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy import stats
+
+#스펙 상,하한치 설정
+print('*'*100)
+print('\n Cpk 계산하는 프로그램 입니다. \n')
+print('*'*100)
+
+usl = float(input('상한값을 입력 하세요 : '))
+lsl = float(input('하한값을 입력 하세요 : '))
+
+df=pd.read_excel('PistonRingDiameter.xlsx')
+df.head()
+
+# Test normality of data distribution
+# fig = plt.figure()
+# ax1 = fig.add_subplot(111) # 111 is equivalent to nrows=1, ncols=1, plot_number=1.
+# prob = stats.probplot(df['Diameter'], dist=stats.norm, plot=ax1)
+# ax1.set_xlabel('')
+# ax1.set_title('Probability plot against normal distribution')
+# plt.show()
+
+# fig = plt.figure()
+# ax1 = fig.add_subplot(111)
+# plot = plt.hist(df['Diameter'])
+# plt.show()
+
+# Anderson-Darling test tests if the null hypothesis that a sample from a population follows a particular distribution.
+stats.anderson(df['Diameter'], dist='norm') #  To test, the distribution of the dataset is normal.
+
+stats.normaltest(df['Diameter'])
+
+x = df['Diameter']
+# Define the Cp index
+def Cp(x, usl, lsl):
+    sigma = x.std()
+    Cp = (usl - lsl) / (6*sigma)
+    return Cp
+
+# Define the Cpk index
+def Cpk(x, usl, lsl):
+    sigma = x.std()
+    m = x.mean()
+    Cpu = (usl - m) / (3*sigma)
+    Cpl = (m - lsl) / (3*sigma)
+    Cpk = np.min([Cpu, Cpl] )
+    return Cpk
+
+
+
+# Calculate the Cp value
+Cp = Cp(x, usl, lsl)
+print("Cp is: ", Cp)
+
+Cpk = Cpk(x, usl, lsl)
+print("Cpk is: ", Cpk)
