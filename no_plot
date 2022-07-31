@@ -28,9 +28,9 @@ df.head()
 # plt.show()
 
 # Anderson-Darling test tests if the null hypothesis that a sample from a population follows a particular distribution.
-stats.anderson(df['Diameter'], dist='norm') #  To test, the distribution of the dataset is normal.
+#stats.anderson(df['Diameter'], dist='norm') #  To test, the distribution of the dataset is normal.
 
-stats.normaltest(df['Diameter'])
+#stats.normaltest(df['Diameter'])
 
 x = df['Diameter']
 # Define the Cp index
